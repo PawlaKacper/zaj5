@@ -27,7 +27,19 @@ class Manager:
     def get_apartment_costs(self,apartment_key, year, month):
         if apartment_key not in self.apartments:
             return 0.0
+        total = 0
+        if year != None and month != None:
+            for bill in self.bills:
+                if bill.apartment == apartment_key and bill.settlement_year == year and bill.settlement_month == month:
+                    total = total + bill.amount_pln
+                
+        elif year != None:
+            for bill in self.bills:
+                if bill.apartment == apartment_key and bill.settlement_year == year:
+                    total = total + bill.amount_pln
+        else:
+            for bill in self.bills:
+                if bill.apartment == apartment_key:
+                    total = total + bill.amount_pln
         
-        total  = sum(bill.amount_pln for bill in self.bills
-                     if bill.apartment == apartment_key and bill.settlement_year == year and bill.settlement_month == month)
         return total
